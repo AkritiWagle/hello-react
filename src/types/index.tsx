@@ -1,0 +1,8 @@
+export interface Customer {
+    id: number;
+    name: string;
+    age: number;
+    phone: string;
+    address: string;
+    isFollowing: boolean;
+  }

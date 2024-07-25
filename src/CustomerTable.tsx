@@ -1,14 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-
-interface Customer {
-  id: number;
-  name: string;
-  age: number;
-  phone: string;
-  address: string;
-}
+import { Customer } from './types';
 
 interface CustomerTableProps {
   customers: Customer[];
@@ -21,6 +14,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onRowClick }) 
     { title: 'Age', dataIndex: 'age', key: 'age' },
     { title: 'Phone', dataIndex: 'phone', key: 'phone' },
     { title: 'Address', dataIndex: 'address', key: 'address' },
+    { title: 'Following', dataIndex: 'isFollowing', key: 'isFollowing', render: (isFollowing: boolean) => (isFollowing ? 'Yes' : 'No') },
   ];
 
   return (
