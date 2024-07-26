@@ -1,53 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Button } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Form, Input, Button } from 'antd';
 import { Customer } from './types';
 
-interface CustomerProfileProps {
-  visible: boolean;
-  customer: Customer | null;
-  onClose: () => void;
-  onSave: (customer: Customer) => void;
-}
+const initialCustomerState: Customer = {
+  id: 0, // Changed from `null` to `0`
+  name: '',
+  age: 0,
+  phone: '',
+  address: '',
+  isFollowing: false,
+};
 
-const CustomerProfile: React.FC<CustomerProfileProps> = ({ visible, customer, onClose, onSave }) => {
+const CustomerProfile: React.FC = () => {
+  const [customer, setCustomer] = useState<Customer>(initialCustomerState);
   const [form] = Form.useForm();
-  const [isFollowing, setIsFollowing] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
-    if (customer) {
-      form.setFieldsValue(customer);
-      setIsFollowing(customer.isFollowing);
-    } else {
-      form.resetFields();
+    if (id !== 'new') {
+      // Fetch customer data from your data source here
+      // Example:
+      const existingCustomer: Customer = {
+        id: 1,
+        name: 'John Doe',
+        age: 28,
+        phone: '123-456-7890',
+        address: '123 Main St',
+        isFollowing: false,
+      };
+      setCustomer(existingCustomer);
+      form.setFieldsValue(existingCustomer);
     }
-  }, [customer, form]);
+  }, [id, form]);
 
   const handleSave = () => {
-    form.validateFields()
-      .then(values => {
-        onSave({ ...values, isFollowing });
-        onClose();
-      })
-      .catch(info => {
-        console.log('Validate Failed:', info);
-      });
+    form.validateFields().then(values => {
+      const updatedCustomer = { ...customer, ...values };
+      // Save updated customer data here
+      navigate('/customer-profiles');
+    });
+  };
+
+  const handleFollowClick = () => {
+    setCustomer(prev => ({ ...prev, isFollowing: !prev.isFollowing }));
+    form.setFieldsValue({ isFollowing: !customer.isFollowing });
   };
 
   return (
-    <Modal
-      visible={visible}
-      title={customer ? "Edit Customer Profile" : "Create Customer Profile"}
-      onCancel={onClose}
-      footer={[
-        <Button key="back" onClick={onClose}>
-          Cancel
-        </Button>,
-        <Button key="submit" type="primary" onClick={handleSave}>
-          Save
-        </Button>,
-      ]}
-    >
-      <Form form={form} layout="vertical" name="customerForm">
+    <div>
+      <h1>{id === 'new' ? 'Create Customer Profile' : 'Edit Customer Profile'}</h1>
+      <Form form={form} layout="vertical" initialValues={customer}>
         <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
           <Input />
         </Form.Item>
@@ -61,12 +65,17 @@ const CustomerProfile: React.FC<CustomerProfileProps> = ({ visible, customer, on
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button onClick={() => setIsFollowing(!isFollowing)}>
-            {isFollowing ? 'Following' : 'Follow'}
+          <Button onClick={handleFollowClick}>
+            {customer.isFollowing ? 'Following' : 'Follow'}
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" onClick={handleSave}>
+            Save
           </Button>
         </Form.Item>
       </Form>
-    </Modal>
+    </div>
   );
 };
 
