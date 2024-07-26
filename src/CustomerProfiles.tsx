@@ -5,8 +5,8 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const CustomerProfiles: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([
-    { id: 1, name: 'John Doe', age: 28, phone: '123-456-7890', address: '123 Main St', isFollowing: false },
-    { id: 2, name: 'Jane Smith', age: 34, phone: '987-654-3210', address: '456 Elm St', isFollowing: false },
+    { id: 1, name: 'Akriti Wagle', age: 18, phone: '986000000', address: 'Newroad pokhara', isFollowing: false },
+    { id: 2, name: 'Prayas', age: 14, phone: '98765550', address: 'kathmandu', isFollowing: false },
   ]);
 
   const navigate = useNavigate();
