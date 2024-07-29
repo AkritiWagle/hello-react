@@ -19,6 +19,8 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profiles" element={<CustomerProfiles />} />
+            <Route path="/CustomerProfile/new" element={<CustomerProfiles />} />
+            <Route path="/CustomerProfile/:id" element={<CustomerProfiles />} />
           </Routes>
         </div>
       </Router>
