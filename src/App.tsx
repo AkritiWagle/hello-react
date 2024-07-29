@@ -1,51 +1,26 @@
+// src/App.tsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Home from './Home';
 import CustomerProfiles from './CustomerProfiles';
-import Counter from './Counter';
-import { ThemeProvider } from './themeContext';
 import ThemeToggleButton from './ThemeToggleButton';
-import withLogging from './withlogging';
-
-interface RouteProps {
-  path: string;
-  element: React.ReactElement;
-}
-
-const Home: React.FC = () => <h1>Home Page</h1>;
-
-const Layout: React.FC = () => {
-  return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/customer-profiles">Customer Profiles</Link>
-          </li>
-          <li>
-            <Link to="/counter">Counter</Link>
-          </li>
-        </ul>
-      </nav>
-      <ThemeToggleButton />
-      <Outlet />
-    </div>
-  );
-};
+import { ThemeProvider } from './themeContext';
+import withLogging from './withLogging';
 
 const App: React.FC = () => {
   return (
     <ThemeProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="customer-profiles" element={<CustomerProfiles />} />
-            <Route path="counter" element={<Counter />} />
-          </Route>
-        </Routes>
+        <div>
+          <nav>
+            <Link to="/">Home</Link> | <Link to="/profiles">Customer Profiles</Link>
+          </nav>
+          <ThemeToggleButton />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profiles" element={<CustomerProfiles />} />
+          </Routes>
+        </div>
       </Router>
     </ThemeProvider>
   );

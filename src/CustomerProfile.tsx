@@ -24,10 +24,10 @@ const CustomerProfile: React.FC = () => {
       // Example:
       const existingCustomer: Customer = {
         id: 1,
-        name: 'John Doe',
-        age: 28,
-        phone: '123-456-7890',
-        address: '123 Main St',
+        name: 'Akriti Wagle',
+        age: 18,
+        phone: '985500000',
+        address: 'Newroad Pokhara',
         isFollowing: false,
       };
       setCustomer(existingCustomer);
