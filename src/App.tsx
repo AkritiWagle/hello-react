@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './Home';
 import CustomerProfiles from './CustomerProfiles';
+import CustomerProfile from "./CustomerProfile";
 import ThemeToggleButton from './ThemeToggleButton';
 import { ThemeProvider } from './themeContext';
 import withLogging from './withlogging';
@@ -18,9 +19,8 @@ const App: React.FC = () => {
           <ThemeToggleButton />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/profiles" element={<CustomerProfiles />} />
-            <Route path="/CustomerProfile/new" element={<CustomerProfiles />} />
-            <Route path="/CustomerProfile/:id" element={<CustomerProfiles />} />
+            <Route path="/profiles" element={<CustomerProfile />} />
+            <Route path="/Customer-Profile/:id" element={<CustomerProfiles />} />
           </Routes>
         </div>
       </Router>
