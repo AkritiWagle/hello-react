@@ -12,13 +12,13 @@ const CustomerProfiles: React.FC = () => {
   const navigate = useNavigate();
 
   const handleRowClick = (customer: Customer) => {
-    navigate(`/customer-profile/${customer.id}`);
+    navigate(`/CustomerProfile/${customer.id}`);
   };
 
   return (
     <div>
       <h1>Customer Profiles</h1>
-      <Link to="/customer-profile/new">
+      <Link to="/CustomerProfile/new">
         <button>Create New Profile</button>
       </Link>
       <CustomerTable customers={customers} onRowClick={handleRowClick} />

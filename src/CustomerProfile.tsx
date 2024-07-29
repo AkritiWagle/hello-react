@@ -39,7 +39,7 @@ const CustomerProfile: React.FC = () => {
     form.validateFields().then(values => {
       const updatedCustomer = { ...customer, ...values };
       // Save updated customer data here
-      navigate('/customer-profiles');
+      navigate('/customerProfiles');
     });
   };
 
