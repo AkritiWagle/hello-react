@@ -9,7 +9,7 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 const lightTheme = {
-  background: '#FFF8E1', // Warm cream color
+  background: '#FFF8E1', 
   color: '#000',
 };
 
