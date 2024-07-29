@@ -5,7 +5,7 @@ import Home from './Home';
 import CustomerProfiles from './CustomerProfiles';
 import ThemeToggleButton from './ThemeToggleButton';
 import { ThemeProvider } from './themeContext';
-import withLogging from './withLogging';
+import withLogging from './withlogging';
 
 const App: React.FC = () => {
   return (
