@@ -1,60 +1,78 @@
 // src/EditCustomerProfile.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
-import { Customer } from './types';
+import { Form, Input, Button, InputNumber } from 'antd';
+import { useCustomer } from './customerContext';
 
 const EditCustomerProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [customer, setCustomer] = useState<Customer | null>(null);
+  const { handleView, handleEdit } = useCustomer();
   const navigate = useNavigate();
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (id) {
-      setCustomer({
-        id: parseInt(id, 10),
-        name: 'Dummy Name',
-        age: 25,
-        phone: '1234567890',
-        address: '123 Street Name',
-        isFollowing: false,
-      });
+      const customer = handleView(Number(id));
+      if (customer) {
+        setIsFollowing(customer.isFollowing);
+        form.setFieldsValue(customer);
+      }
     }
-  }, [id]);
+  }, [id, handleView, form]);
 
-  const handleSave = () => {
-    // Save the updated customer data
-    // After saving, redirect to the customer profiles list
-    navigate('/profiles');
+  const onCustomerEdit = () => {
+    form
+      .validateFields()
+      .then((value) => {
+        handleEdit(Number(id), { ...value, isFollowing });
+        navigate('/profiles');
+      })
+      .catch((error) => console.error(error));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCustomer(prevState => prevState ? { ...prevState, [name]: value } : null);
+  const onCustomerFollow = () => {
+    setIsFollowing((prev) => !prev);
   };
-
-  if (!customer) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div>
       <h1>Edit Customer Profile</h1>
-      <Form>
-        <Form.Item label="Name">
-          <Input name="name" value={customer.name} onChange={handleChange} />
+      <Form form={form} validateTrigger="onChange">
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[{ required: true, message: 'Please input your name!' }]}>
+          <Input />
         </Form.Item>
-        <Form.Item label="Age">
-          <Input name="age" type="number" value={customer.age} onChange={handleChange} />
+        <Form.Item
+          label="Age"
+          name="age"
+          rules={[{ required: true, message: 'Please input your age!' }]}>
+          <InputNumber style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item label="Phone">
-          <Input name="phone" value={customer.phone} onChange={handleChange} />
+        <Form.Item
+          label="Phone"
+          name="phone"
+          rules={[{ required: false, message: 'Please input your phone!' }]}>
+          <Input />
         </Form.Item>
-        <Form.Item label="Address">
-          <Input name="address" value={customer.address} onChange={handleChange} />
+        <Form.Item
+          label="Address"
+          name="address"
+          rules={[{ required: true, message: 'Please input your address!' }]}>
+          <Input />
         </Form.Item>
+
         <Form.Item>
-          <Button type="primary" onClick={handleSave}>Save</Button>
+          <Button onClick={onCustomerFollow}>{isFollowing ? 'Unfollow' : 'Follow'}</Button>
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" onClick={onCustomerEdit}>
+            Save
+          </Button>
         </Form.Item>
       </Form>
     </div>

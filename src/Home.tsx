@@ -8,7 +8,10 @@ const Home: React.FC = () => {
       <nav>
         <ul>
           <li>
-            <Link to="/customer-profiles">Customer Profiles</Link>
+            <Link to="/profiles">Customer Profiles</Link>
+          </li>
+          <li>
+            <Link to="/counter">Counter</Link>
           </li>
         </ul>
       </nav>

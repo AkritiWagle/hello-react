@@ -33,7 +33,7 @@ const CustomerProfile: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setCustomer(prevState => ({ ...prevState, [name]: value }));
+    setCustomer((prevState) => ({ ...prevState, [name]: value }));
   };
 
   return (
@@ -41,7 +41,6 @@ const CustomerProfile: React.FC = () => {
       <h1>{id ? 'Edit Customer Profile' : 'Create Customer Profile'}</h1>
       <Form>
         <Form.Item label="Name">
-          
           <Input name="name" value={customer.name} onChange={handleChange} />
         </Form.Item>
         <Form.Item label="Age">
@@ -54,7 +53,9 @@ const CustomerProfile: React.FC = () => {
           <Input name="address" value={customer.address} onChange={handleChange} />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" onClick={handleSave}>Save</Button>
+          <Button type="primary" onClick={handleSave}>
+            Save
+          </Button>
         </Form.Item>
       </Form>
     </div>
