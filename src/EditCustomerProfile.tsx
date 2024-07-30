@@ -11,9 +11,6 @@ const EditCustomerProfile: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      // Fetch customer data for the given id and set it to state
-      // Example: setCustomer(fetchedCustomer);
-      // For now, we'll use a dummy customer for demonstration
       setCustomer({
         id: parseInt(id, 10),
         name: 'Dummy Name',

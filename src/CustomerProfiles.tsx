@@ -41,6 +41,7 @@ const CustomerProfile: React.FC = () => {
       <h1>{id ? 'Edit Customer Profile' : 'Create Customer Profile'}</h1>
       <Form>
         <Form.Item label="Name">
+          
           <Input name="name" value={customer.name} onChange={handleChange} />
         </Form.Item>
         <Form.Item label="Age">

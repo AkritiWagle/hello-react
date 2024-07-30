@@ -1,54 +1,82 @@
-// src/CreateCustomerProfile.tsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Form, Input, Button } from 'antd';
 import { Customer } from './types';
 
-const initialCustomer: Customer = {
-  id: 0,
-  name: '',
-  age: 0,
-  phone: '',
-  address: '',
-  isFollowing: false,
-};
+interface CustomerProfileProps {
+  visible: boolean;
+  customer: Customer | null;
+  onClose: () => void;
+  onSave: (customer: Customer) => void;
+}
 
-const CreateCustomerProfile: React.FC = () => {
-  const [customer, setCustomer] = useState<Customer>(initialCustomer);
-  const navigate = useNavigate();
+// const initialCustomer: Customer = {
+//   id: 0,
+//   name: '',
+//   age: 0,
+//   phone: '',
+//   address: '',
+//   isFollowing: false,
+// };
+
+
+const CreateCustomerProfile: React.FC<CustomerProfileProps> = ({ visible, customer, onClose, onSave }) => {
+  const [form] = Form.useForm();
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    if (customer) {
+      form.setFieldsValue(customer);
+      setIsFollowing(customer.isFollowing);
+    } else {
+      form.resetFields();
+    }
+  }, [customer, form]);
 
   const handleSave = () => {
-    // Save the new customer data
-    // After saving, redirect to the customer profiles list
-    navigate('/profiles');
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCustomer(prevState => ({ ...prevState, [name]: value }));
+    form.validateFields()
+      .then(values => {
+        onSave({ ...values, isFollowing });
+        onClose();
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
   };
 
   return (
-    <div>
-      <h1>Create Customer Profile</h1>
-      <Form>
-        <Form.Item label="Name">
-          <Input name="name" value={customer.name} onChange={handleChange} />
+    <Modal
+      visible={visible}
+      title={customer ? "Edit Customer Profile" : "Create Customer Profile"}
+      onCancel={onClose}
+      footer={[
+        <Button key="back" onClick={onClose}>
+          Cancel
+        </Button>,
+        <Button key="submit" type="primary" onClick={handleSave}>
+          Save
+        </Button>,
+      ]}
+    >
+      <Form form={form} layout="vertical" name="customerForm">
+        <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
+          <Input />
         </Form.Item>
-        <Form.Item label="Age">
-          <Input name="age" type="number" value={customer.age} onChange={handleChange} />
+        <Form.Item name="age" label="Age" rules={[{ required: true, message: 'Please enter the age' }]}>
+          <Input type="number" />
         </Form.Item>
-        <Form.Item label="Phone">
-          <Input name="phone" value={customer.phone} onChange={handleChange} />
+        <Form.Item name="phone" label="Phone" rules={[{ required: true, message: 'Please enter the phone' }]}>
+          <Input />
         </Form.Item>
-        <Form.Item label="Address">
-          <Input name="address" value={customer.address} onChange={handleChange} />
+        <Form.Item name="address" label="Address" rules={[{ required: true, message: 'Please enter the address' }]}>
+          <Input />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" onClick={handleSave}>Save</Button>
+          <Button onClick={() => setIsFollowing(!isFollowing)}>
+            {isFollowing ? 'Following' : 'Follow'}
+          </Button>
         </Form.Item>
       </Form>
-    </div>
+    </Modal>
   );
 };
 
